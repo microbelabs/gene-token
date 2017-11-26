@@ -2,6 +2,7 @@ pragma solidity ^0.4.8;
 
 import "./StandardToken.sol";
 
+
 contract GENEToken is ERC20Token {
     string public symbol = "GENE";
     string public name = "Game Energy Token";

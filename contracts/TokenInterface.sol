@@ -2,6 +2,7 @@
 // https://github.com/ethereum/EIPs/issues/20
 pragma solidity ^0.4.8;
 
+
 contract TokenInterface {
     /// @return Token total supply
     function totalSupply() view public returns (uint tokenSupply);

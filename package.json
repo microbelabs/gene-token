@@ -2,7 +2,7 @@
   "name": "gene-token",
   "version": "1.0.0",
   "description": "Game Energy ERC20-Token",
-  "main": "index.js",
+  "main": "truffle.js",
   "repository": "https://github.com/microbelabs/gene-token.git",
   "constributors": [
     {
@@ -10,7 +10,6 @@
       "url": "https://github.com/oknoorap",
       "email": "pracutian@ribhnux.tech"
     },
-
     {
       "name": "Ribhararnus Pracutiar",
       "url": "https://github.com/raitucarp",
@@ -18,13 +17,15 @@
     }
   ],
   "license": "MIT",
-  "main": "truffle.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "compile": "truffle compile",
-    "test": "truffle test",
-    "lint": ""
+    "compile": "node_modules/.bin/truffle compile",
+    "test": "yarn lint && node_modules/.bin/truffle test",
+    "lint": "solium -d contracts/"
+  },
+  "devDependencies": {
+    "truffle": "^4.0.1"
   }
 }

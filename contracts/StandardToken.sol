@@ -5,6 +5,7 @@ pragma solidity ^0.4.8;
 
 import "./TokenInterface.sol";
 
+
 contract ERC20Token is TokenInterface {
     uint256 constant MAX_UINT256 = 2**256 - 1;
     mapping (address => uint256) balances;
@@ -44,6 +45,6 @@ contract ERC20Token is TokenInterface {
     }
 
     function allowance(address _owner, address _spender) view public returns (uint256 remaining) {
-      return allowed[_owner][_spender];
+        return allowed[_owner][_spender];
     }
 }
