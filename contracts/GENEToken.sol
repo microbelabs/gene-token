@@ -1,15 +1,21 @@
 pragma solidity ^0.4.18;
 
-import "./StandardToken.sol";
+import "zeppelin-solidity/contracts/token/StandardToken.sol";
 
 
-contract GENEToken is ERC20Token {
+contract GENEToken is StandardToken {
     // Public constants.
     string public symbol = "GENE";
     string public name = "Game Energy Token";
     uint8 public decimals = 8;
-    uint256 tokenSupply = 8000000000;
+    uint256 INITIAL_SUPPLY = 8000000000;
     address public owner;
+
+    // add trusted list of games
+    mapping(address => bool) public trusted;
+
+    // add listed games
+    mapping(address => bool) public listed;
 
     // List of games using GENE Token
     mapping(uint => Game) public games;
@@ -32,13 +38,9 @@ contract GENEToken is ERC20Token {
  
     /// Constructor
     function GENEToken() public {
+        totalSupply = INITIAL_SUPPLY;
         owner = msg.sender;
-        balances[owner] = tokenSupply;
-    }
-
-    /// ERC20 Token function
-    function totalSupply() view public returns (uint) {
-        return tokenSupply;
+        balances[owner] = totalSupply;
     }
 
     /**

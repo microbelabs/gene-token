@@ -27,5 +27,8 @@
   },
   "devDependencies": {
     "truffle": "^4.0.1"
+  },
+  "dependencies": {
+    "zeppelin-solidity": "^1.4.0"
   }
 }
