@@ -22,16 +22,16 @@ contract GENEToken is StandardToken {
     uint8 totalGame;
 
     // Game Entity
-    // Always has list of players with 99 slot properties available.
+    // Game always has list of players with 99 slot attributes available.
     struct Game {
         string name;
         string description;
         address contractAddress;
-        mapping(address => Properties[99]) players;
+        mapping(address => Attributes[99]) players;
     }
 
-    // Game Properties
-    struct Properties {
+    // Game Attributes
+    struct Attributes {
         bytes32 key;
         bytes value;
     }
