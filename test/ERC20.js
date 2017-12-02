@@ -37,14 +37,3 @@ contract('ERC20 Standard Token Basic Functions', accounts => {
     }
   });
 });
-
-contract('GENE Token Functions', accounts => {
-  it(`should register game`);
-  it('should check registered game already added to list');
-  it('should view complete list of registered game ');
-  it('should add game to trusted list');
-  it('should view list of trusted games');
-  it(`should view game's name`);
-  it(`should view game's name`);
-  it(`should view game's attributes list`);
-});
