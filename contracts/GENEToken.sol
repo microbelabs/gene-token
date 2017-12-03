@@ -11,8 +11,6 @@ contract GENEToken is StandardToken, Ownable {
     uint8 public decimals = 8;
     uint256 INITIAL_SUPPLY = 8000000000;
     address public owner;
-
-
     
     enum State { Published, InReview, Banned }
 
@@ -26,7 +24,7 @@ contract GENEToken is StandardToken, Ownable {
         State status;
     }
 
-    uint8 totalGame;
+    uint8 public totalGame;
 
     // List of games using GENE Token
     mapping(uint => Game) public games;
@@ -77,6 +75,7 @@ contract GENEToken is StandardToken, Ownable {
         game.contractAddress = msg.sender;
         game.status = State.InReview;
  
+        require(transfer(owner, minimumRegistrationBalance) == true);
         games[gameIndex] = game;
         GameSubmitted(msg.sender);
     }
