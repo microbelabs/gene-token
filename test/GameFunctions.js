@@ -52,17 +52,26 @@ contract('GENE Token Functions', accounts => {
   it(`should be able submit games`, async () => {
     try {
       const token = await GeneToken.deployed();
+      const initialBalanceDeveloper1 = await token.balanceOf.call(developer1);
       const isGame1Submitted = await token.submitGame(MicrobeWarsGame.name, MicrobeWarsGame.description, {
         from: developer1
       });
     
-      assert.equal(isGame1Submitted.logs[0].args.gameOwner, developer1, "Game #1 Registration failed");
+      assert.equal(isGame1Submitted.logs[1].args.gameOwner, developer1, "Game #1 Registration failed");
 
+      const finalDeveloper1Balance = await token.balanceOf.call(developer1);
+      assert.equal(finalDeveloper1Balance.toNumber(), initialBalanceDeveloper1.toNumber() - 100);
+
+
+      const initialBalanceDeveloper2 = await token.balanceOf.call(developer2);
       const isGame2Submitted = await token.submitGame(MicrobeCardGame.name, MicrobeCardGame.description, {
         from: developer2
       });
 
-      assert.equal(isGame2Submitted.logs[0].args.gameOwner, developer2, "Game #1 Registration failed");
+      assert.equal(isGame2Submitted.logs[1].args.gameOwner, developer2, "Game #1 Registration failed");
+
+      const finalDeveloper2Balance = await token.balanceOf.call(developer2);
+      assert.equal(finalDeveloper2Balance.toNumber(), initialBalanceDeveloper2.toNumber() - 100);
     } catch (e) {
       throw new Error(e);
     } 
@@ -90,16 +99,32 @@ contract('GENE Token Functions', accounts => {
     }
   });
 
-  // it('should check registered game already added to list', async () => {
+  it('should check registered game already added to list', async () => {
+    try {
+      const token = await GeneToken.deployed();
+      const game1 = await token.getGameName.call(developer1);
+      const game2 = await token.getGameName.call(developer2);
+
+      assert.equal(game1, MicrobeWarsGame.name);
+      assert.equal(game2, MicrobeCardGame.name);
+    } catch (e) {
+      throw new Error(e);
+    }
+  });
+
+  // it('should view complete list of registered game.', async () => {
   //   try {
   //     const token = await GeneToken.deployed();
-
+  //     const totalGame = await token.totalGame.call();
+      
+  //     for(let i=0; i < totalGame; i++) {
+  //       const name = await token.getGameName.call();
+  //       console.log(name);
+  //     }
   //   } catch (e) {
   //     throw new Error(e);
   //   }
   // });
-
-  // it('should view complete list of registered game ');
   // it('should add game to trusted list');
   // it('should view list of trusted games');
   // it(`should view game's name`);
