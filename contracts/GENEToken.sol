@@ -1,25 +1,18 @@
 pragma solidity ^0.4.18;
 
 import "zeppelin-solidity/contracts/token/StandardToken.sol";
+import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 
 
-contract GENEToken is StandardToken {
+contract GENEToken is StandardToken, Ownable {
     // Public constants.
     string public symbol = "GENE";
     string public name = "Game Energy Token";
     uint8 public decimals = 8;
     uint256 INITIAL_SUPPLY = 8000000000;
     address public owner;
-
-    // add trusted list of games
-    mapping(address => bool) public trusted;
-
-    // add listed games
-    mapping(address => bool) public listed;
-
-    // List of games using GENE Token
-    mapping(uint => Game) public games;
-    uint8 totalGame;
+    
+    enum State { Published, InReview, Banned }
 
     // Game Entity
     // Game always has list of players with 99 slot attributes available.
@@ -27,11 +20,18 @@ contract GENEToken is StandardToken {
         string name;
         string description;
         address contractAddress;
-        mapping(address => Attributes[99]) players;
+        mapping ( address => Attribute[99]) players;
+        State status;
     }
 
+    uint8 public totalGame;
+
+    // List of games using GENE Token
+    mapping(uint => Game) public games;
+
+
     // Game Attributes
-    struct Attributes {
+    struct Attribute {
         bytes32 key;
         bytes value;
     }
@@ -42,6 +42,44 @@ contract GENEToken is StandardToken {
         owner = msg.sender;
         balances[owner] = totalSupply;
     }
+
+    uint8 minimumRegistrationBalance = 100;
+
+    modifier gameOwner(address _owner) {
+        require(msg.sender == _owner);
+        _;
+    }
+
+
+    // event if game is submitted to blockchain
+    event GameSubmitted(address gameOwner);
+
+    /**
+    * Add game to index
+    *
+    * @param _name Game name
+    * @param _description Game description
+    * @return Boolean
+    */
+    function submitGame(string _name, string _description) public {
+        require(balances[msg.sender] >= minimumRegistrationBalance);
+        require(isGameAdded(msg.sender) == false);
+
+        totalGame++;
+
+        uint8 gameIndex = totalGame;
+
+        Game memory game;
+        game.name = _name;
+        game.description = _description;
+        game.contractAddress = msg.sender;
+        game.status = State.InReview;
+ 
+        require(transfer(owner, minimumRegistrationBalance) == true);
+        games[gameIndex] = game;
+        GameSubmitted(msg.sender);
+    }
+
 
     /**
     * Get game name.
